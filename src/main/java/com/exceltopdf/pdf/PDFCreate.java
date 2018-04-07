@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -72,17 +73,17 @@ public class PDFCreate {
     }
 
     /**
-     * Create XML to PDF
+     * Create XML to PDF with file XML and XLST
      * 
-     * @param xmlInput
-     * @param xsltInput
+     * @param xmlFile
+     * @param xsltFile
      * @param output
      */
-    public void createXMLtoPDF(String xmlInput, String xsltInput, String output) {
+    public void createXMLtoPDF(String xmlFile, String xsltFile, String output) {
         try {
 
-            Source xslt = new StreamSource(new File(xsltInput));
-            Source text = new StreamSource(new File(xmlInput));
+            Source xslt = new StreamSource(new File(xsltFile));
+            Source xml = new StreamSource(new File(xmlFile));
 
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xslt);
@@ -90,7 +91,39 @@ public class PDFCreate {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(outputStream, "UTF-8");
 
-            transformer.transform(text, new StreamResult(writer));
+            transformer.transform(xml, new StreamResult(writer));
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
+            createHTMLtoPDF(byteArrayInputStream, output);
+
+        } catch (Exception e) {
+            logger.error("Transformer XSLT Exception", e);
+        }
+    }
+
+    /**
+     * Create XML to PDF with data XML and file XLST
+     * 
+     * @param xmlData is data XML
+     * @param xsltFile
+     * @param output
+     */
+    public void createXML2toPDF(String xmlData, String xsltFile, String output) {
+        try {
+
+            InputStream streamXML = new ByteArrayInputStream(xmlData.getBytes(StandardCharsets.UTF_8));
+
+            Source xslt = new StreamSource(new File(xsltFile));
+            Source xml = new StreamSource(streamXML);
+
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(xslt);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Writer writer = new OutputStreamWriter(outputStream, "UTF-8");
+
+            transformer.transform(xml, new StreamResult(writer));
 
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
 

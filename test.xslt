@@ -45,7 +45,7 @@
 														<xsl:if test="root/data/H5 != 0">
 														<tr>
 															<td>Name/Tên</td>
-															<td><xsl:value-of select="root/data/H5" /></td>
+															<td><xsl:value-of select="root/data/D" /></td>
 														</tr>
 														</xsl:if>
 														<tr>

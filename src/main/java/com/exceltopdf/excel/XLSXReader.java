@@ -1,11 +1,14 @@
 package com.exceltopdf.excel;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -13,74 +16,58 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.exceltopdf.pdf.PDFCreate;
-
 public class XLSXReader {
     private static final Logger logger = LoggerFactory.getLogger(XLSXReader.class);
 
-    private static void printCellValue(Cell cell) {
-        switch (cell.getCellTypeEnum()) {
-        case BOOLEAN:
-            System.out.print(cell.getBooleanCellValue());
-            break;
-        case STRING:
-            System.out.print(cell.getRichStringCellValue().getString());
-            break;
-        case NUMERIC:
-            if (DateUtil.isCellDateFormatted(cell)) {
-                System.out.print(cell.getDateCellValue());
-            } else {
-                System.out.print(cell.getNumericCellValue());
-            }
-            break;
-        case FORMULA:
-            System.out.print(cell.getCellFormula());
-            break;
-        case BLANK:
-            System.out.print("");
-            break;
-        default:
-            System.out.print("");
-        }
+    /**
+     * Reader file excel to XML
+     * 
+     * @param fileExcel
+     * @return XML
+     */
+    public List<String> readerToXML(String fileExcel) {
+        ArrayList<String> listXML = new ArrayList<String>();
+        
+        Workbook workbook = null;
+        try {
+            workbook = WorkbookFactory.create(new File(fileExcel));
+            // Getting the Sheet at index zero
+            Sheet sheet = workbook.getSheetAt(0);
 
-        System.out.print("\t");
+            DataFormatter dataFormatter = new DataFormatter();
+
+            int rowSkip = 8;
+            for (int i = rowSkip; i < sheet.getPhysicalNumberOfRows(); i++) {
+                StringBuilder strBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                strBuilder.append("<root>").append("<data>");
+                Row row = sheet.getRow(i);
+                for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+                    Cell cell = row.getCell(j);
+                    String colName = CellReference.convertNumToColString(j);
+                    String cellValue = dataFormatter.formatCellValue(cell);
+                    strBuilder.append("<" + colName + ">").append(convertValue(cellValue)).append("</" + colName + ">");
+                }
+                strBuilder.append("</data>").append("</root>");
+                listXML.add(strBuilder.toString());
+            }
+        } catch (Exception e) {
+            logger.error("XLSX Exception", e);
+        } finally {
+            if (workbook != null) {
+                try {
+                    workbook.close();
+                } catch (IOException e) { }
+            }
+        }
+        System.out.println("Convert EXCEL to XML is COMPLETE");
+        return listXML;
     }
 
-    public void reader() throws Exception {
-        Workbook workbook = WorkbookFactory.create(new File("/Users/khanhlv/Downloads/Test salary.xlsx"));
-
-        // Retrieving the number of sheets in the Workbook
-        System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
-
-        // 2. Or you can use a for-each loop
-        System.out.println("Retrieving Sheets using for-each loop");
-        for (Sheet sheet : workbook) {
-            System.out.println("=> " + sheet.getSheetName());
-        }
-
-        // Getting the Sheet at index zero
-        Sheet sheet = workbook.getSheetAt(0);
-
-        // Create a DataFormatter to format and get each cell's value as String
-        DataFormatter dataFormatter = new DataFormatter();
-
-        System.out.println("\n\nIterating over Rows and Columns using for-each loop\n");
-        int rowSkip = 8;
-        for (int i = rowSkip; i < sheet.getPhysicalNumberOfRows(); i++) {
-            Row row = sheet.getRow(i);
-            System.out.println(row.getCell(CellReference.convertColStringToIndex("D")));
-            for (Cell cell : row) {
-                String cellValue = dataFormatter.formatCellValue(cell);
-                System.out.print(cellValue + "\t");
-            }
-            System.out.println();
-        }
-
-        // Closing the workbook
-        workbook.close();
+    private String convertValue(String value) {
+        return StringUtils.isBlank(value) || value.equals("- 0") ? "0" : value.trim();
     }
+
     public static void main(String[] args) throws Exception {
-        String abc = "#{H4}";
-        System.out.println(abc.replaceAll("\\#\\{H4\\}", "abc"));
+        new XLSXReader().readerToXML("Test salary.xlsx");
     }
 }
