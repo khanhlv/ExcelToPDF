@@ -38,24 +38,30 @@
 															<td>Department/Phòng ban</td>
 															<td><xsl:value-of select="root/data/H4" /></td>
 														</tr>
+														<xsl:if test="root/data/A != 0">
 														<tr>
 															<td>Employee Code/Mã nhân viên</td>
-															<td>MANNHAN</td>
+															<td><xsl:value-of select="root/data/A" /></td>
 														</tr>
-														<xsl:if test="root/data/H5 != 0">
+														</xsl:if>
+														<xsl:if test="root/data/D != 0">
 														<tr>
 															<td>Name/Tên</td>
 															<td><xsl:value-of select="root/data/D" /></td>
 														</tr>
 														</xsl:if>
+														<xsl:if test="root/data/C != 0">
 														<tr>
 															<td>Tax code/Mã số thuế</td>
-															<td>1123-123-123</td>
+															<td><xsl:value-of select="root/data/C" /></td>
 														</tr>
+														</xsl:if>
+														<xsl:if test="root/data/E != 0">
 														<tr>
 															<td>Job title/Chức danh</td>
-															<td>Accounting staff</td>
+															<td><xsl:value-of select="root/data/E" /></td>
 														</tr>
+														</xsl:if>
 														<tr>
 															<td>Join date/Ngày vào làm</td>
 															<td>01/08/2017</td>
@@ -124,52 +130,52 @@
 										</tr>
 										<tr>
 											<td class="p-l-30" style="width: 65%;">Actual WK day Salary/Lương thực tế (ngày)</td>
-											<td class="txt-center" style="width: 15%;">AC4 (Hours)</td>
+											<td class="txt-center" style="width: 15%;">AC4 hrs/giờ</td>
 											<td class="txt-center" style="width: 12%;">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-30">Nightshift Salary/Lương làm đêm</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-30">Paid leave</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-30">Overtime Salary/Lương làm thêm</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 150</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 200</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 210</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 270</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 300</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>
 											<td class="p-l-50">OT 390</td>
-											<td class="txt-center">AC4 (Hours)</td>
+											<td class="txt-center">AC4 hrs/giờ</td>
 											<td class="txt-center">AM4</td>
 										</tr>
 										<tr>

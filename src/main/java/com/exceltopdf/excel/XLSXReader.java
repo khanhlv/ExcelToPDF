@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,8 +27,8 @@ public class XLSXReader {
      * @param fileExcel
      * @return XML
      */
-    public List<String> readerToXML(String fileExcel) {
-        ArrayList<String> listXML = new ArrayList<String>();
+    public List<Map<String, String>> readerToXML(String fileExcel) {
+        ArrayList<Map<String, String>> listXML = new ArrayList<Map<String, String>>();
         
         Workbook workbook = null;
         try {
@@ -37,18 +39,26 @@ public class XLSXReader {
             DataFormatter dataFormatter = new DataFormatter();
 
             int rowSkip = 8;
+            
             for (int i = rowSkip; i < sheet.getPhysicalNumberOfRows(); i++) {
+                Map<String, String> rowMap = new HashedMap<String, String>();
+
                 StringBuilder strBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                 strBuilder.append("<root>").append("<data>");
+
                 Row row = sheet.getRow(i);
                 for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
                     Cell cell = row.getCell(j);
                     String colName = CellReference.convertNumToColString(j);
                     String cellValue = dataFormatter.formatCellValue(cell);
                     strBuilder.append("<" + colName + ">").append(convertValue(cellValue)).append("</" + colName + ">");
+                    rowMap.put(colName, cellValue);
                 }
                 strBuilder.append("</data>").append("</root>");
-                listXML.add(strBuilder.toString());
+
+                rowMap.put("XML_OUTPUT", strBuilder.toString());
+
+                listXML.add(rowMap);
             }
         } catch (Exception e) {
             logger.error("XLSX Exception", e);
