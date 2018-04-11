@@ -22,41 +22,32 @@ public class XLSXReader {
     private static final Logger logger = LoggerFactory.getLogger(XLSXReader.class);
 
     /**
-     * Reader file excel to XML
+     * Reader file excel to MAP
      * 
      * @param fileExcel
-     * @return XML
+     * @return MAP
      */
-    public List<Map<String, String>> readerToXML(String fileExcel) {
+    public List<Map<String, String>> readerToMAP(String fileExcel, int indexSheet, int rowSkip) {
         ArrayList<Map<String, String>> listXML = new ArrayList<Map<String, String>>();
-        
+
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(new File(fileExcel));
             // Getting the Sheet at index zero
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheetAt(indexSheet);
 
             DataFormatter dataFormatter = new DataFormatter();
 
-            int rowSkip = 8;
-            
             for (int i = rowSkip; i < sheet.getPhysicalNumberOfRows(); i++) {
                 Map<String, String> rowMap = new HashedMap<String, String>();
-
-                StringBuilder strBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-                strBuilder.append("<root>").append("<data>");
 
                 Row row = sheet.getRow(i);
                 for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
                     Cell cell = row.getCell(j);
                     String colName = CellReference.convertNumToColString(j);
                     String cellValue = dataFormatter.formatCellValue(cell);
-                    strBuilder.append("<" + colName + ">").append(convertValue(cellValue)).append("</" + colName + ">");
                     rowMap.put(colName, cellValue);
                 }
-                strBuilder.append("</data>").append("</root>");
-
-                rowMap.put("XML_OUTPUT", strBuilder.toString());
 
                 listXML.add(rowMap);
             }
@@ -66,18 +57,11 @@ public class XLSXReader {
             if (workbook != null) {
                 try {
                     workbook.close();
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                }
             }
         }
-        System.out.println("Convert EXCEL to XML is COMPLETE");
+
         return listXML;
-    }
-
-    private String convertValue(String value) {
-        return StringUtils.isBlank(value) || value.equals("- 0") ? "0" : value.trim();
-    }
-
-    public static void main(String[] args) throws Exception {
-        new XLSXReader().readerToXML("Test salary.xlsx");
     }
 }
