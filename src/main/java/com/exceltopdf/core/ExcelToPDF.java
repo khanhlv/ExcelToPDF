@@ -11,7 +11,7 @@ import com.exceltopdf.pdf.PDFCreate;
 
 public class ExcelToPDF {
     private static String convertValue(String value) {
-        return StringUtils.isBlank(value) || value.equals("- 0") ? "0" : value.trim();
+        return StringUtils.isBlank(value) || value.equals("- 0") ? "0" : value.trim().replaceAll("\\(|\\)|,", "");
     }
     
     public static void main(String[] args) throws IOException, InterruptedException {
