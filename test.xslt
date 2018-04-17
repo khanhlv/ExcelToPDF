@@ -598,7 +598,6 @@
 								
 								<table>
 									<tbody>
-										
 										<xsl:variable name="CJ" select="root/data/CJ"/>
 										<tr>
 											<td class="p-l-30" style="width: 65%;">Marsh premium for dependant/BH Marsh cho người phụ thuộc</td>

@@ -15,13 +15,19 @@ public class ExcelToPDF {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        String fileInput = args[0];
+        String fileFolder = args[1];
+        String columnFileName = args[2];
+        String sheetIndex = args[3];
+        String skipRow = args[4];
+        
         PDFCreate pdfCreate = new PDFCreate();
         XLSXReader xlsxReader = new XLSXReader();
 
-        List<Map<String, String>> list = xlsxReader.readerToMAP("/Users/khanhlv/Downloads/Test 2.xlsx", 0, 4);
+        List<Map<String, String>> list = xlsxReader.readerToMAP(fileInput, Integer.parseInt(sheetIndex), Integer.parseInt(skipRow));
 
         for (Map<String, String> mapXML : list) {
-            String file = mapXML.get("C");
+            String file = mapXML.get(columnFileName);
 
             StringBuilder strBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             strBuilder.append("<root>").append("<data>");
@@ -34,7 +40,7 @@ public class ExcelToPDF {
 
             System.out.println(file);
             System.out.println(strBuilder.toString());
-            pdfCreate.createXML2toPDF(strBuilder.toString(), "test.xslt", "/Users/khanhlv/" + file + ".pdf");
+            pdfCreate.createXML2toPDF(strBuilder.toString(), "test.xslt", fileFolder + file + ".pdf");
             System.out.println("Create PDF is COMPLETE");
         }
     }
