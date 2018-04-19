@@ -1,4 +1,4 @@
-package com.exceltopdf.core;
+package com.exceltopdf.example;
 
 import java.io.IOException;
 import java.util.List;
