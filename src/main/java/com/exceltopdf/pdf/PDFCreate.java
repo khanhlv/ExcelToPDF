@@ -89,7 +89,7 @@ public class PDFCreate {
             Transformer transformer = factory.newTransformer(xslt);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Writer writer = new OutputStreamWriter(outputStream, "UTF-8");
+            Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 
             transformer.transform(xml, new StreamResult(writer));
 
@@ -121,7 +121,7 @@ public class PDFCreate {
             Transformer transformer = factory.newTransformer(xslt);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Writer writer = new OutputStreamWriter(outputStream, "UTF-8");
+            Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 
             transformer.transform(xml, new StreamResult(writer));
 

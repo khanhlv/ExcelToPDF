@@ -690,8 +690,8 @@
 					</tbody>
 				</table>
 
-				<p>Note: Mọi thắc mắc về lương tháng 08/2017, vui lòng liên hệ bộ phận hỗ trợ theo số điện thoại 0191919282 chậm nhất 17:00 ngày 20 tháng 09 năm 2017 kể từ ngày nhận được phiếu lương chính thức. Sau thời gian này mọi thắc mắc sẽ không được tiếp nhận và giải quyết. Cảm ơn!</p>
-				<p class="m-0">For any Aug 2017's salary query, please contact the payroll support at 0191919282 by latest 17:00 on 20th Sep 2017 since receipt date of your payslip. Any salary queries raised afterwards will be not addressed and or resolved. Thank you!</p>
+				<p>Note: Mọi thắc mắc về lương tháng <xsl:value-of select="root/data/DATE_MONTH_YEAH_VN" />, vui lòng liên hệ bộ phận hỗ trợ theo số điện thoại 0913732155 chậm nhất 17:00 ngày 20 tháng <xsl:value-of select="root/data/DATE_MONTH" /> năm <xsl:value-of select="root/data/DATE_YEAH" /> kể từ ngày nhận được phiếu lương chính thức. Sau thời gian này mọi thắc mắc sẽ không được tiếp nhận và giải quyết. Cảm ơn!</p>
+				<p class="m-0">For any <xsl:value-of select="root/data/DATE_MONTH_YEAH_US" />'s salary query, please contact the payroll support at 0913732155 by latest 17:00 on 20th <xsl:value-of select="root/data/DATE_MONTH_YEAH_US" /> since receipt date of your payslip. Any salary queries raised afterwards will be not addressed and or resolved. Thank you!</p>
 			</body>
 		</html>
 	</xsl:template>
