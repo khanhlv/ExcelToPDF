@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import com.exceltopdf.excel.XLSXReader;
 import com.exceltopdf.pdf.PDFCreate;
 
 public class ExcelToPDF {
+
     private static String convertValue(String value) {
         return StringUtils.isBlank(value) || value.equals("- 0") ? "0" : value.trim().replaceAll("\\(|\\)|,", "");
     }
@@ -51,15 +53,23 @@ public class ExcelToPDF {
             strBuilder.append(String.format("<%s>", "DATE_MONTH_YEAH_VN"));
             strBuilder.append("<![CDATA[" + simpleDateFormatVN.format(date) + "]]>");
             strBuilder.append(String.format("</%s>", "DATE_MONTH_YEAH_VN"));
-
+            
             strBuilder.append(String.format("<%s>", "DATE_MONTH_YEAH_US"));
             strBuilder.append("<![CDATA[" + simpleDateFormatUS.format(date) + "]]>");
             strBuilder.append(String.format("</%s>", "DATE_MONTH_YEAH_US"));
 
+            strBuilder.append(String.format("<%s>", "DATE_MONTH_YEAH_VN_1"));
+            strBuilder.append("<![CDATA[" + simpleDateFormatVN.format(DateUtils.addMonths(date, -1)).toUpperCase() + "]]>");
+            strBuilder.append(String.format("</%s>", "DATE_MONTH_YEAH_VN_1"));
+
+            strBuilder.append(String.format("<%s>", "DATE_MONTH_YEAH_US_1"));
+            strBuilder.append("<![CDATA[" + simpleDateFormatUS.format(DateUtils.addMonths(date, -1)).toUpperCase() + "]]>");
+            strBuilder.append(String.format("</%s>", "DATE_MONTH_YEAH_US_1"));
+
             strBuilder.append("</data>").append("</root>");
 
             System.out.println(file);
-            // System.out.println(strBuilder.toString());
+            //System.out.println(strBuilder.toString());
             pdfCreate.createXML2toPDF(strBuilder.toString(), "test.xslt", fileFolder + file + ".pdf");
             System.out.println("Create PDF is COMPLETE");
         }

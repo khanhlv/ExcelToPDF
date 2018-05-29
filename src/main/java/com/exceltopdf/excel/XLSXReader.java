@@ -41,7 +41,7 @@ public class XLSXReader {
                 Map<String, String> rowMap = new HashedMap<String, String>();
 
                 Row row = sheet.getRow(i);
-                for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+                for (int j = 0; j < 250; j++) {
                     Cell cell = row.getCell(j);
                     String colName = CellReference.convertNumToColString(j);
                     String cellValue = dataFormatter.formatCellValue(cell);
